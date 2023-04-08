@@ -1,0 +1,24 @@
+{
+    "allStocks":{
+        "stocks":[
+        {
+        "ticker": "PLCH",
+        "title": "placeholder",
+        "id": "idk what the id looks like",
+        "weight": 0,
+        "stats": {
+            "max": 0,
+            "min": 0,
+            "average": 0,
+            "returns": 0,
+            "startDate": 0,
+            "endDate": 0,
+            "misc":[]
+        },
+        "reccomendations":{
+            "reccvol": 0,
+            "reccprice": 0
+        }
+        }]
+    }
+}
