@@ -91,42 +91,47 @@ export default function Home() {
   function handleBudgetSet(e:any){
     setBudget(e)
   }
+  function landingPage(){
+    return(
+      <div className="flex  justify-center w-screen h-screen overflow-hidden bg-white relative">
+        <Image src={bkg} alt="pp" className=" absolute w-screen h-screen object-cover z-0 brightness-150" />
+        <div className='absolute flex-col w-full z-1 justify-center mt-10'>
+          <div className='flex font-sfpro w-full justify-center space-x-24 font-extrabold translate-y-2 text-gray-500'>
+            <button className='tracking-[.16em] text-md '>MARKETS</button>
+            <button className='tracking-[.16em] text-md '>TRADE</button>
+            <button className='tracking-[.16em] text-md '>EXPLORE</button>
+            <button className='tracking-[.16em] text-md '>ABOUT</button>
+          </div>
+        </div>
+        <div className='absolute flex origin-center translate-y-[80px] w-full font-sfpro flex-col space-y-3  z-1 items-center'> {/*Regular Text*/}
+          <Image src={luhq} alt = "pp" className='-translate-y-8 -translate-x-[510px] left-0 top-0' />
+          <p className="text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pinkish to-purplish font-agxb text-center  ">PROPEL YOUR PORTFOLIO</p>
+          <p className='text-3xl font-light text-[#919093] text-center pb-10'>Revolutionize portfolio optimization with our quantum-powered actively managed ETFs</p>
+          <div className='flex space-x-4 justify-center'>
+            <div className='transition h-14 w-48 p-1 bg-gradient-to-r from-pinkish to-purplish text-xl rounded-2xl text-black font-extrabold tracking-wider flex justify-center items-center hover:ease-out duration-150 ease-in shadow'>
+              <button className='w-full h-full bg-[#3C2F60] rounded-xl text-pinkish font-extrabold tracking-wider'>
+                TRADE NOW
+              </button>
+            </div>
+            <div className=' h-14 w-48 p-1 bg-gradient-to-r from-light-green to-[#68DAEE] text-xl rounded-2xl text-black font-extrabold tracking-wider flex justify-center items-center'>
+              <button className='w-full h-full bg-black rounded-xl text-light-green font-extrabold tracking-wider'>
+                EXPLORE
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <Image src={figure} alt="pp" className="h-[800px] w-auto translate-y-[45%] z-1 m-0" />
+      </div>
+    )
+  }
   return (
-    <div className="w-screen h-screen overflow-hidden bg-white relative">
-      <Image src={bkg} alt="pp" className=" absolute w-screen h-screen object-cover z-0 brightness-150" />
     
-      <div className='absolute origin-center translate-y-[120px] translate-x-[30%] font-sfpro flex-col space-y-3  z-1 items-center'> {/*Regular Text*/}
-        <p className="text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pinkish to-purplish font-agxb text-center  ">PROPEL YOUR PORTFOLIO</p>
-        <p className='text-3xl font-light text-[#919093] text-center pb-10'>Revolutionize portfolio optimization with our quantum-powered actively managed ETFs</p>
-        <div className='flex space-x-4 justify-center'>
-          <div className='transition h-14 w-48 p-1 bg-gradient-to-r from-pinkish to-purplish text-xl rounded-2xl text-black font-extrabold tracking-wider flex justify-center items-center hover:ease-out duration-150 ease-in shadow'>
-            <button className='w-full h-full bg-[#3C2F60] rounded-xl text-pinkish font-extrabold tracking-wider'>
-              TRADE NOW
-            </button>
-          </div>
-          <div className=' h-14 w-48 p-1 bg-gradient-to-r from-light-green to-[#68DAEE] text-xl rounded-2xl text-black font-extrabold tracking-wider flex justify-center items-center'>
-            <button className='w-full h-full bg-black rounded-xl text-light-green font-extrabold tracking-wider'>
-              EXPLORE
-            </button>
-          </div>
-        </div>
-      </div>
-      <div className='absolute translate-y-[50px] translate-x-[12%] flex w-full z-1'>
-        <div className='relative h-full w-full'>
-          <Image src={luhq} alt = "pp" className='absolute left-0 top-0 w-[130px] y-[34px]' />
-        </div>
-        <div className='flex font-sfpro w-3/4 justify-center space-x-24 font-extrabold translate-y-2 text-gray-500'>
-          <button className='tracking-[.16em] text-md '>MARKETS</button>
-          <button className='tracking-[.16em] text-md '>TRADE</button>
-          <button className='tracking-[.16em] text-md '>EXPLORE</button>
-          <button className='tracking-[.16em] text-md '>ABOUT</button>
-        </div>
-      </div>
-      <Image src={figure} alt="pp" className=" h-[800px] w-auto translate-x-[75%] translate-y-[45%] z-1 m-0" />
 
       
       
      <>
+     {landingPage()}
      {/*
         <Image src={bkg} alt="pp" className="absolute w-screen h-screen object-cover x-0 y-0 z-0" />
         <div className='absolute p-24 bg-scroll flex flex-col justify-center z-10'>
@@ -171,6 +176,5 @@ export default function Home() {
         </div>
         */}
       </>
-    </div>
   )
 }
