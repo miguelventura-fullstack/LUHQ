@@ -4,7 +4,8 @@ import React from 'react'
 import {allStocks} from './data/stockData.json'
 import bkg from "./svgs/landing.png";
 import figure from "./svgs/figure.png"
-import line from "./svgs/line.png"
+import luhq from "./svgs/luhq.png";
+import * as d3 from 'd3';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -91,9 +92,39 @@ export default function Home() {
     setBudget(e)
   }
   return (
-    <div className="w-screen h-screen overflow-hidden">
-      <Image src={bkg} alt="pp" className=" absolute w-screen h-screen object-cover z-0" />
-      <Image src={figure} alt="pp" className=" h-[80%] w-auto origin-left translate-x-[95%] translate-y-[25%] z-1" />
+    <div className="w-screen h-screen overflow-hidden bg-white relative">
+      <Image src={bkg} alt="pp" className=" absolute w-screen h-screen object-cover z-0 brightness-150" />
+    
+      <div className='absolute origin-center translate-y-[120px] translate-x-[30%] font-sfpro flex-col space-y-3  z-1 items-center'> {/*Regular Text*/}
+        <p className="text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pinkish to-purplish font-agxb text-center  ">PROPEL YOUR PORTFOLIO</p>
+        <p className='text-3xl font-light text-[#919093] text-center pb-10'>Revolutionize portfolio optimization with our quantum-powered actively managed ETFs</p>
+        <div className='flex space-x-4 justify-center'>
+          <div className='transition h-14 w-48 p-1 bg-gradient-to-r from-pinkish to-purplish text-xl rounded-2xl text-black font-extrabold tracking-wider flex justify-center items-center hover:ease-out duration-150 ease-in shadow'>
+            <button className='w-full h-full bg-[#3C2F60] rounded-xl text-pinkish font-extrabold tracking-wider'>
+              TRADE NOW
+            </button>
+          </div>
+          <div className=' h-14 w-48 p-1 bg-gradient-to-r from-light-green to-[#68DAEE] text-xl rounded-2xl text-black font-extrabold tracking-wider flex justify-center items-center'>
+            <button className='w-full h-full bg-black rounded-xl text-light-green font-extrabold tracking-wider'>
+              EXPLORE
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className='absolute translate-y-[50px] translate-x-[12%] flex w-full z-1'>
+        <div className='relative h-full w-full'>
+          <Image src={luhq} alt = "pp" className='absolute left-0 top-0 w-[130px] y-[34px]' />
+        </div>
+        <div className='flex font-sfpro w-3/4 justify-center space-x-24 font-extrabold translate-y-2 text-gray-500'>
+          <button className='tracking-[.16em] text-md '>MARKETS</button>
+          <button className='tracking-[.16em] text-md '>TRADE</button>
+          <button className='tracking-[.16em] text-md '>EXPLORE</button>
+          <button className='tracking-[.16em] text-md '>ABOUT</button>
+        </div>
+      </div>
+      <Image src={figure} alt="pp" className=" h-[800px] w-auto translate-x-[75%] translate-y-[45%] z-1 m-0" />
+
+      
       
      <>
      {/*

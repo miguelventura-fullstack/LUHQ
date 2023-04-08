@@ -8,6 +8,14 @@
   --background-end-rgb: 255, 255, 255;
 }
 
+@layer base {
+  @font-face {
+    font-family: AktivGrotesk;
+    font-weight: 400;
+    src: url(/fonts/Aktiv-Grotesk/TTF/AktivGrotesk-XBold.ttf) format("ttf");
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
