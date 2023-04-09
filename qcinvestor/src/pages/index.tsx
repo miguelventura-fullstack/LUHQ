@@ -237,7 +237,7 @@ export default function Home() {
 
     function dashboardPage() {
         return (
-            <div className="flex w-screen h-screen overflow-hidden bg-white relative border-purplish">
+            <div className="flex w-screen h-screen bg-white relative border-purplish">
                 <Image
                     src={explore}
                     alt=""
@@ -389,7 +389,7 @@ export default function Home() {
                             {/*Heading for Bottom Panel*/}
                         </div>
                         <div
-                            className="border-purplish bg-bluish border-2 w-full h-max flex-grow"
+                            className="border-purplish bg-bluish border-2 w-full h-min flex-grow"
                             id="graph"
                         ></div>
                     </div>
