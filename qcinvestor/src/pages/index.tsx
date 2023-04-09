@@ -123,8 +123,8 @@ export default function Home() {
         const strictIsoParse = d3.utcParse("%Y-%m-%dT%H:%M:%S.%LZ");
         // set the dimensions and margins of the graph
         var margin = { top: 20, right: 20, bottom: 50, left: 70 },
-            width = 960 - margin.left - margin.right,
-            height = 500 - margin.top - margin.bottom;
+            width = 1700 - margin.left - margin.right,
+            height =220 - margin.top - margin.bottom;
         // append the svg object to the body of the page
 
         d3.select("#graph").selectAll("svg").remove();
@@ -284,7 +284,7 @@ export default function Home() {
                                     onChange={(e) => setTickers(e.target.value)}
                                 />
                             </div>
-                            <div className="flex">
+                          
                             <button className="self-center mt-20">
                                 <Image
                                     src={calc}
@@ -293,10 +293,10 @@ export default function Home() {
                                     className="transition ease-in-out delay-15 hover:-translate-y-1 hover:scale-125 duration-300"
                                 />
                             </button>
-                            <button className="self-center mt-20 text-white" onClick={createGraph}>
+                            <button className="transition ease-in-out delay-15 hover:-translate-y-1 hover:scale-125 duration-300 self-center mt-10 text-white border-pinkish border-2 p-2 rounded-2xl" onClick={createGraph}>
                                Generate Chart
                             </button>
-                            </div>
+                            
                         </div>
                         <div className="lex flex-col justify-start mt-10 pl-16 pr-16 pt-4 h-full w-full">
                             {" "}
