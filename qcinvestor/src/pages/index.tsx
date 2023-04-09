@@ -11,7 +11,6 @@ import calc from "./svgs/calculate.png"
 import down from "./svgs/downarrow.png"
 import up from "./svgs/uparrow.png"
 import box from "./svgs/box.png"
-import * as ObjectsToCsv from "objects-to-csv"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -87,9 +86,10 @@ export default function Home() {
   const [userTickers, setTickers] = React.useState("AAPL, AMZN, MSFT, VOO");
   const [stockCombo, setCombo] = React.useState(3);
   const [recc, setRecc] = React.useState([
-    "q","q","q","q"
+    " "," "," "," "," "
   ])
   const [dta, setDta] = React.useState([])
+  const [display, setDisplay] = React.useState(0);
 
   async function getStocks(){
     const response = await fetch("http://localhost:80", {
@@ -107,29 +107,70 @@ export default function Home() {
     setRecc(response.raw);
     setDta(response.data);
     console.log(response)
-    createGraph()
+    //createGraph()
+  }
+  function chooseDisplay(){
+    switch(display){
+      case 0:
+        return landingPage()
+      case 1:
+        return dashboardPage()
+    }
   }
 
   const createGraph = async () => {
-    let data = dta
-    let map = new Map();
-    for(let r of data){
+    let map:Map<string,Array<Object>> = new Map()
+    for(let r of dta){
       let obj = r[1]
       let tempArr:Array<Object> = []
       Object.entries(obj).forEach(val => {
-        tempArr.push({date: val[0], value: val[1]})
+        tempArr.push({date: (val[0]).toString, value: val[1]})
       })
       map.set(r[0], tempArr)
     }
-    console.log(map)
+    let data = map.get("PV")
 
-
-    let parseTime = d3.timeParse("%Y-%m-%d");
-    data.forEach((d) => {
+    console.log(data)
+    let parseTime = d3.timeParse("%Y-%m-%dT%I:%p:%S");
+    data?.forEach((d) => {
       d.date = parseTime(d.date);
       d.value = +d.value;
     });
-    console.log(data)
+    // set the dimensions and margins of the graph
+    var margin = { top: 20, right: 20, bottom: 50, left: 70 },
+        width = 960 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+    // append the svg object to the body of the page
+
+    var svg = d3.select("body").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left},     ${margin.top})`);
+
+      // Add X axis and Y axis  
+   var x = d3.scaleTime().range([0, width]);
+   var y = d3.scaleLinear().range([height, 0]);
+   x.domain(d3.extent(map.get("PV"), (d) => { return d.date; }));
+   y.domain([0, d3.max(map.value, (d) => { return d.value; })]);
+   svg.append("g")
+   .attr("transform", `translate(0, ${height})`)
+   .call(d3.axisBottom(x));
+   svg.append("g")
+   .call(d3.axisLeft(y));
+
+    // add the Line
+    var valueLine = d3.line()
+                   .x((d) => { return x(d.date); })
+                   .y((d) => { return y(d.value); });
+    svg.append("path")
+    .data([map])
+    .attr("class", "line")
+    .attr("fill", "none")
+    .attr("stroke", "steelblue")
+    .attr("stroke-width", 1.5)
+    .attr("d", valueLine)
+    console.log()
   }
 
   function landingPage(){
@@ -150,12 +191,12 @@ export default function Home() {
           <p className='text-3xl font-light text-[#919093] text-center pb-10'>Revolutionize portfolio optimization with our quantum-powered actively managed ETFs</p>
           <div className='flex space-x-4 justify-center'>
             <div className='transition h-14 w-48 p-1 bg-gradient-to-r from-pinkish to-purplish text-xl rounded-2xl text-black font-extrabold tracking-wider flex justify-center items-center hover:ease-out duration-150 ease-in shadow'>
-              <button className='w-full h-full bg-[#3C2F60] rounded-xl text-pinkish font-extrabold tracking-wider'>
+              <button onClick={(e) => setDisplay(1)}className='w-full h-full bg-[#3C2F60] rounded-xl text-pinkish font-extrabold tracking-wider'>
                 TRADE NOW
               </button>
             </div>
             <div className=' h-14 w-48 p-1 bg-gradient-to-r from-light-green to-[#68DAEE] text-xl rounded-2xl text-black font-extrabold tracking-wider flex justify-center items-center'>
-              <button className='w-full h-full bg-black rounded-xl text-light-green font-extrabold tracking-wider'>
+              <button onClick={(e) => setDisplay(1)} className='w-full h-full bg-black rounded-xl text-light-green font-extrabold tracking-wider'>
                 EXPLORE
               </button>
             </div>
@@ -170,7 +211,12 @@ export default function Home() {
   function dashboardPage(){
     return(
       <div className="flex w-screen h-screen overflow-hidden bg-white relative border-purplish"> 
+        
+        
         <Image src={explore} alt="" className="absolute object-cover h-screen w-screen brightness-100 z-0"/>
+        <button onClick={(e) => setDisplay(0)} className='absolute left-[33%] top-10'>
+          <Image src={luhq} alt = "pp" className='' />
+        </button>
         <div className='flex absolute w-screen h-screen mt-10'>
           <div className='grid ml-20 mr-20 h-3/5 w-3/5 justify-center grid-cols-2 space-x-10 '> {/* The two control panels*/}
               <div className='flex flex-col justify-start mt-10 pl-16 pr-16 pt-4 h-full w-full'> {/* The first Panel */}
@@ -253,7 +299,7 @@ export default function Home() {
       
       
      <>
-     {dashboardPage()}
+     {chooseDisplay()}
      {/*
         <Image src={bkg} alt="pp" className="absolute w-screen h-screen object-cover x-0 y-0 z-0" />
         <div className='absolute p-24 bg-scroll flex flex-col justify-center z-10'>
