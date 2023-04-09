@@ -84,26 +84,20 @@ export default function Home() {
   const [risk, setRisk] = React.useState(5);
   const [userTickers, setTickers] = React.useState("");
   const [stockCombo, setCombo] = React.useState(0);
+  
+  async function getStocks(){
+    const response = await fetch("http://localhost:80", {
+      method: "POST",
+      body: JSON.stringify({
+        "stocks": userTickers.split(", ",10),
+        "risk": risk/10,
+        "budget": budget
+      })
 
-
-  function handleUpdateStocks(){
-    setStock(allStocks)
+    }).then(resp => {
+      console.log(resp)
+    })
   }
-  function handleBudgetIncrease(){
-    setBudget(budget+1)
-  }
-  function handleBudgetDecrease(){
-    setBudget(budget-1)
-  }
-  function handleBudgetSet(e:any){
-    setBudget(e)
-  }
-  const MAX = 10;
-  const getBackgroundSize = () => {
-    return {
-      backgroundSize: `${(risk * 100) / MAX}% 100%`,
-    };
-  };
 
   function landingPage(){
     return(
@@ -149,16 +143,16 @@ export default function Home() {
 
 
               <div className='flex flex-col justify-start mt-10 pl-16 pr-16 pt-4 h-full w-full'> {/* The first Panel */}
-                 <p className='font-sfpro text-center text-2xl pt-2 pb-1'>Risk Level</p>
-                 <input type="range" min="1" max={MAX} value={risk} className="slider w-full bg-gradient-to-r from-pinkish to-purplish h-1 mt-10 mb-10 rounded-lg" id="myRange" onChange={(e) => setRisk(parseInt(e.target.value))}/>
+                 <p className='font-sfpro text-center text-2xl pt-2 pb-1'>Risk Level ({risk/10})</p>
+                 <input type="range" min="1" max="100" step="1" value={risk} className="slider w-full bg-gradient-to-r from-pinkish to-purplish h-1 mt-10 mb-10 rounded-lg" id="myRange" onChange={(e) => setRisk(parseInt(e.target.value))}/>
 
                  <p className='font-sfpro text-center text-2xl pt-8 pb-1'>Stocks to Include</p>
                  <div className='w-full h-24 bg-gradient-to-bl from-pinkish to-purplish rounded-xl flex p-1'>
-                  <input type='text' className=' bg-backblue rounded-lg w-full text border-none' value={userTickers} onChange={(e) => setTickers(e.target.value)} />
+                  <input type='text' className=' bg-backblue rounded-lg w-full text border-none' placeholder="APPL, AMAZN, etc." value={userTickers} onChange={(e) => setTickers(e.target.value)} />
                  </div>
                 
                 <button className='self-center mt-20'>
-                  <Image src={calc} alt="" className='transition ease-in-out delay-15 hover:-translate-y-1 hover:scale-125 duration-300' />
+                  <Image src={calc} alt="" onClick={(e) => getStocks()} className='transition ease-in-out delay-15 hover:-translate-y-1 hover:scale-125 duration-300' />
                 </button>
 
               </div>
@@ -167,22 +161,22 @@ export default function Home() {
                 
                 <div>
                   <p className='font-sfpro text-center text-2xl pb-1'>Budget</p>
-                  <div className='w-full h-24 bg-gradient-to-bl from-pinkish to-purplish rounded-xl flex p-1'>
-                    <input type='text' className=' bg-backblue rounded-lg w-full text border-none' value={userTickers} onChange={(e) => setTickers(e.target.value)} />
+                  <div className='w-full h-12 bg-gradient-to-bl from-pinkish to-purplish rounded-xl flex p-1'>
+                    <input type='text' className=' bg-backblue rounded-lg w-full text border-none text-center' value={budget} onChange={(e) => setBudget(parseInt(e.target.value))} />
                   </div>
                 </div>
                 
                 
-                <p className='font-sfpro text-center text-2xl pt-9 pb-1'>Stock per Combinations</p>
+                <p className='font-sfpro text-center text-2xl pt-20 pb-1'>Stock per Combinations</p>
                 <div className='flex justify-center'>
                   <div className='w-1/6 h-12 bg-gradient-to-bl from-pinkish to-purplish rounded-xl flex p-1'>
-                    <input type='number' className=' bg-backblue rounded-lg w-full text border-none' value={budget} onChange={(e) => setBudget(parseInt(e.target.value))} />
+                    <input type='number' className=' bg-backblue rounded-lg w-full text border-none text-center' value={stockCombo} onChange={(e) => setCombo(parseInt(e.target.value))} />
                   </div>
                   <div className='flex-col flex scale-150 place-self-center ml-2'>
-                    <button onClick={(e) => setBudget(budget+1)}> 
+                    <button onClick={(e) => setCombo(stockCombo+1)}> 
                       <Image src={(up)} alt="" className='transition ease-in-out delay-15 hover:-translate-y-1 hover:scale-125 duration-300' />
                     </button>
-                    <button onClick={(e) => setBudget(budget-1)}> 
+                    <button onClick={(e) => setCombo(stockCombo-1)}> 
                       <Image src={(down)} alt="" className='transition ease-in-out delay-15 hover:translate-y-1 hover:scale-125 duration-300'/>
                     </button>
                   </div>
@@ -192,11 +186,8 @@ export default function Home() {
 
           </div>
 
-          <div className=' grid grid-rows-2 h-3/5 w-2/5 mr-10 space-y-4'>
+          <div className=' grid h-[68.4%] w-2/5 mr-10 space-y-4'>
               <div className=' flex-col border-purplish bg-bluish border-2 space-y-4'> {/*Display 1*/}
-              
-              </div>
-              <div className=' flex-col border-purplish bg-bluish border-2 space-y-4'> {/*Display 2*/}
               
               </div>
           </div>
