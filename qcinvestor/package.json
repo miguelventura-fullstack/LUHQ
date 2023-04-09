@@ -9,10 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-slider": "^1.1.1",
     "@types/node": "18.15.11",
     "@types/react": "18.0.33",
     "@types/react-dom": "18.0.11",
     "autoprefixer": "10.4.14",
+    "cn": "^0.1.1",
     "d3": "^7.8.4",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
