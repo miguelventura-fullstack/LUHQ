@@ -6,6 +6,10 @@ import bkg from "./svgs/landing.png";
 import figure from "./svgs/figure.png"
 import luhq from "./svgs/luhq.png";
 import * as d3 from 'd3';
+import explore from "./svgs/EXPLORE.png"
+import { Range } from "react-range";
+import { useEffect, useState } from "react";
+import calc from "./svgs/calculate.png"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -77,6 +81,8 @@ export default function Home() {
   });
   const [budget, setBudget] = React.useState(0);
   const [tempBudget, setTemp] = React.useState(0);
+  const [risk, setRisk] = React.useState(5);
+  const [userTickers, setTickers] = React.useState("");
 
 
   function handleUpdateStocks(){
@@ -91,6 +97,13 @@ export default function Home() {
   function handleBudgetSet(e:any){
     setBudget(e)
   }
+  const MAX = 10;
+  const getBackgroundSize = () => {
+    return {
+      backgroundSize: `${(risk * 100) / MAX}% 100%`,
+    };
+  };
+
   function landingPage(){
     return(
       <div className="flex  justify-center w-screen h-screen overflow-hidden bg-white relative">
@@ -125,13 +138,70 @@ export default function Home() {
       </div>
     )
   }
+
+  function dashboardPage(){
+    return(
+      <div className="flex w-screen h-screen overflow-hidden bg-white relative border-purplish"> 
+        <Image src={explore} alt="" className="absolute object-cover h-screen w-screen brightness-100 z-0"/>
+        <div className='flex absolute w-screen h-screen mt-10'>
+          <div className='grid ml-20 mr-20 h-3/5 w-3/5 justify-center grid-cols-2 space-x-10 '> {/* The two control panels*/}
+
+
+              <div className='flex flex-col justify-start mt-10 pl-16 pr-16 pt-4 h-full w-full'> {/* The first Panel */}
+                 <p className='font-sfpro text-center text-2xl pt-2 pb-1'>Risk Level</p>
+                 <input type="range" min="1" max={MAX} value={risk} className="slider w-full bg-gradient-to-r from-pinkish to-purplish h-1 mt-10 mb-10 rounded-lg" id="myRange" onChange={(e) => setRisk(parseInt(e.target.value))}/>
+
+                 <p className='font-sfpro text-center text-2xl pt-8 pb-1'>Stocks to Include</p>
+                 <div className='w-full h-24 bg-gradient-to-bl from-pinkish to-purplish rounded-xl flex p-1'>
+                  <input type='text' className=' bg-backblue rounded-lg w-full text border-none' value={userTickers} onChange={(e) => setTickers(e.target.value)} />
+                 </div>
+                
+                <button className='self-center mt-20'>
+                  <Image src={calc} alt="" className='transition ease-in-out delay-15 hover:-translate-y-1 hover:scale-125 duration-300' />
+                </button>
+
+              </div>
+
+              <div className='flex flex-col justify-start mt-10 pl-16 pr-16 pt-4 h-full w-full'> {/* The second Panel */}
+                <p className='font-sfpro text-center text-2xl pt-2 pb-1'>Budget</p>
+                <div className='w-full h-12 bg-gradient-to-bl from-pinkish to-purplish rounded-xl flex p-1'>
+                  <input type='number' className=' bg-backblue rounded-lg w-full text border-none' value={userTickers} onChange={(e) => setTickers(e.target.value)} />
+                </div>
+              </div>
+
+
+          </div>
+
+          <div className=' grid grid-rows-2 h-3/5 w-2/5 mr-10 space-y-4'>
+              <div className=' flex-col border-purplish bg-bluish border-2 space-y-4'> {/*Display 1*/}
+              
+              </div>
+              <div className=' flex-col border-purplish bg-bluish border-2 space-y-4'> {/*Display 2*/}
+              
+              </div>
+          </div>
+          <div className='absolute flex flex-col h-[30%] w-[95.58%] m-10 bottom-4'> 
+            <div className='border-purplish bg-bluish border-2 w-64 h-10 '> {/*Heading for Bottom Panel*/}
+
+            </div>
+            <div className='border-purplish bg-bluish border-2 w-full h-max flex-grow'> {/*Heading for Bottom Panel*/}
+              bruh
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+    )
+  }
   return (
     
 
       
       
      <>
-     {landingPage()}
+     {dashboardPage()}
      {/*
         <Image src={bkg} alt="pp" className="absolute w-screen h-screen object-cover x-0 y-0 z-0" />
         <div className='absolute p-24 bg-scroll flex flex-col justify-center z-10'>

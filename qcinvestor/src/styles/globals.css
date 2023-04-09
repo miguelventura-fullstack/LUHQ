@@ -1,19 +1,45 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.slidecontainer {
+  width: 100%; /* Width of the outside container */
+}
+
+/* The slider itself */
+.slider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+   /* Full-width *//* Specified height */
+/* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 1
+}
+
+/* Mouse-over effects */
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */ 
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 5px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #ffffff; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+  border-radius: .5rem;
+}
+
+.slider::-moz-range-thumb {
+  width: 5px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #ffffff; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+  border-radius: .5rem;
+}
 
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
-}
-
-@layer base {
-  @font-face {
-    font-family: AktivGrotesk;
-    font-weight: 400;
-    src: url(/fonts/Aktiv-Grotesk/TTF/AktivGrotesk-XBold.ttf) format("ttf");
-  }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -32,4 +58,8 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+}
+
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
 }

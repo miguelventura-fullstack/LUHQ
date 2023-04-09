@@ -18,7 +18,9 @@ module.exports = {
         'light-green' : '#A8FFAB',
         'weird-gray' : '#D9D9D9',
         'pinkish': '#F9A5FF',
-        'purplish': '#AD8BFF'
+        'purplish': '#AD8BFF',
+        'bluish': '#202744',
+        'backblue': '#0C0F19'
       }
     },
     fontFamily: {
