@@ -127,6 +127,7 @@ export default function Home() {
             height = 500 - margin.top - margin.bottom;
         // append the svg object to the body of the page
 
+        d3.select("#graph").selectAll("svg").remove();
         var svg = d3
             .select("#graph")
             .append("svg")
