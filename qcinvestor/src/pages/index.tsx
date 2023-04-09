@@ -10,6 +10,8 @@ import explore from "./svgs/EXPLORE.png"
 import calc from "./svgs/calculate.png"
 import down from "./svgs/downarrow.png"
 import up from "./svgs/uparrow.png"
+import box from "./svgs/box.png"
+import * as ObjectsToCsv from "objects-to-csv"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -82,21 +84,52 @@ export default function Home() {
   const [budget, setBudget] = React.useState(0);
   const [tempBudget, setTemp] = React.useState(0);
   const [risk, setRisk] = React.useState(5);
-  const [userTickers, setTickers] = React.useState("");
-  const [stockCombo, setCombo] = React.useState(0);
-  
+  const [userTickers, setTickers] = React.useState("AAPL, AMZN, MSFT, VOO");
+  const [stockCombo, setCombo] = React.useState(3);
+  const [recc, setRecc] = React.useState([
+    "q","q","q","q"
+  ])
+  const [dta, setDta] = React.useState([])
+
   async function getStocks(){
     const response = await fetch("http://localhost:80", {
       method: "POST",
+      headers:{
+        'Content-Type': "application/json"
+      },
       body: JSON.stringify({
         "stocks": userTickers.split(", ",10),
         "risk": risk/10,
-        "budget": budget
+        "budget": stockCombo  
       })
 
-    }).then(resp => {
-      console.log(resp)
-    })
+    }).then(resp => resp.json())
+    setRecc(response.raw);
+    setDta(response.data);
+    console.log(response)
+    createGraph()
+  }
+
+  const createGraph = async () => {
+    let data = dta
+    let map = new Map();
+    for(let r of data){
+      let obj = r[1]
+      let tempArr:Array<Object> = []
+      Object.entries(obj).forEach(val => {
+        tempArr.push({date: val[0], value: val[1]})
+      })
+      map.set(r[0], tempArr)
+    }
+    console.log(map)
+
+
+    let parseTime = d3.timeParse("%Y-%m-%d");
+    data.forEach((d) => {
+      d.date = parseTime(d.date);
+      d.value = +d.value;
+    });
+    console.log(data)
   }
 
   function landingPage(){
@@ -140,8 +173,6 @@ export default function Home() {
         <Image src={explore} alt="" className="absolute object-cover h-screen w-screen brightness-100 z-0"/>
         <div className='flex absolute w-screen h-screen mt-10'>
           <div className='grid ml-20 mr-20 h-3/5 w-3/5 justify-center grid-cols-2 space-x-10 '> {/* The two control panels*/}
-
-
               <div className='flex flex-col justify-start mt-10 pl-16 pr-16 pt-4 h-full w-full'> {/* The first Panel */}
                  <p className='font-sfpro text-center text-2xl pt-2 pb-1'>Risk Level ({risk/10})</p>
                  <input type="range" min="1" max="100" step="1" value={risk} className="slider w-full bg-gradient-to-r from-pinkish to-purplish h-1 mt-10 mb-10 rounded-lg" id="myRange" onChange={(e) => setRisk(parseInt(e.target.value))}/>
@@ -156,7 +187,6 @@ export default function Home() {
                 </button>
 
               </div>
-
               <div className='lex flex-col justify-start mt-10 pl-16 pr-16 pt-4 h-full w-full'> {/* The second Panel */}
                 
                 <div>
@@ -182,20 +212,31 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-
-
           </div>
 
           <div className=' grid h-[68.4%] w-2/5 mr-10 space-y-4'>
-              <div className=' flex-col border-purplish bg-bluish border-2 space-y-4'> {/*Display 1*/}
-              
+              <div className=' flex flex-col border-purplish bg-bluish border-2 space-y-16'> {/*Display 1*/}
+                <p className="mt-3 text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pinkish to-purplish font-sfpro text-center  ">Reccomended Stocks</p>
+                <>
+                  {recc.map((el, index) =>
+                    <div className='flex flex-row w-full justify-start pl-48'>
+                      <div className='relative h-10 w-10 -translate-y-0.5 mr-4'>
+                        <Image src={box} alt="" className='absolute' />
+                        <p className='absolute ml-4 mt-1'>{index+1}</p>
+                      </div>
+                      <p>{el[0]}</p>
+                    </div>
+                  )
+                    
+                  } 
+                  </>
               </div>
           </div>
           <div className='absolute flex flex-col h-[30%] w-[95.58%] m-10 bottom-4'> 
             <div className='border-purplish bg-bluish border-2 w-64 h-10 '> {/*Heading for Bottom Panel*/}
 
             </div>
-            <div className='border-purplish bg-bluish border-2 w-full h-max flex-grow'> {/*Heading for Bottom Panel*/}
+            <div className='border-purplish bg-bluish border-2 w-full h-max flex-grow'> {/*Bottom Panel*/}
               bruh
             </div>
           </div>
