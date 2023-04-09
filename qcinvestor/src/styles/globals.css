@@ -60,6 +60,7 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-input[type=number]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button 
+{
+   -webkit-appearance: none;
 }

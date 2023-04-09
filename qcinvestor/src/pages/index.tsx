@@ -7,9 +7,9 @@ import figure from "./svgs/figure.png"
 import luhq from "./svgs/luhq.png";
 import * as d3 from 'd3';
 import explore from "./svgs/EXPLORE.png"
-import { Range } from "react-range";
-import { useEffect, useState } from "react";
 import calc from "./svgs/calculate.png"
+import down from "./svgs/downarrow.png"
+import up from "./svgs/uparrow.png"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -83,6 +83,7 @@ export default function Home() {
   const [tempBudget, setTemp] = React.useState(0);
   const [risk, setRisk] = React.useState(5);
   const [userTickers, setTickers] = React.useState("");
+  const [stockCombo, setCombo] = React.useState(0);
 
 
   function handleUpdateStocks(){
@@ -162,10 +163,29 @@ export default function Home() {
 
               </div>
 
-              <div className='flex flex-col justify-start mt-10 pl-16 pr-16 pt-4 h-full w-full'> {/* The second Panel */}
-                <p className='font-sfpro text-center text-2xl pt-2 pb-1'>Budget</p>
-                <div className='w-full h-12 bg-gradient-to-bl from-pinkish to-purplish rounded-xl flex p-1'>
-                  <input type='number' className=' bg-backblue rounded-lg w-full text border-none' value={userTickers} onChange={(e) => setTickers(e.target.value)} />
+              <div className='lex flex-col justify-start mt-10 pl-16 pr-16 pt-4 h-full w-full'> {/* The second Panel */}
+                
+                <div>
+                  <p className='font-sfpro text-center text-2xl pb-1'>Budget</p>
+                  <div className='w-full h-24 bg-gradient-to-bl from-pinkish to-purplish rounded-xl flex p-1'>
+                    <input type='text' className=' bg-backblue rounded-lg w-full text border-none' value={userTickers} onChange={(e) => setTickers(e.target.value)} />
+                  </div>
+                </div>
+                
+                
+                <p className='font-sfpro text-center text-2xl pt-9 pb-1'>Stock per Combinations</p>
+                <div className='flex justify-center'>
+                  <div className='w-1/6 h-12 bg-gradient-to-bl from-pinkish to-purplish rounded-xl flex p-1'>
+                    <input type='number' className=' bg-backblue rounded-lg w-full text border-none' value={budget} onChange={(e) => setBudget(parseInt(e.target.value))} />
+                  </div>
+                  <div className='flex-col flex scale-150 place-self-center ml-2'>
+                    <button onClick={(e) => setBudget(budget+1)}> 
+                      <Image src={(up)} alt="" className='transition ease-in-out delay-15 hover:-translate-y-1 hover:scale-125 duration-300' />
+                    </button>
+                    <button onClick={(e) => setBudget(budget-1)}> 
+                      <Image src={(down)} alt="" className='transition ease-in-out delay-15 hover:translate-y-1 hover:scale-125 duration-300'/>
+                    </button>
+                  </div>
                 </div>
               </div>
 
