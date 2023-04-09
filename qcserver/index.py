@@ -18,30 +18,6 @@ from fastapi import FastAPI
 app = FastAPI()
 
 
-def plot_portfolio_against_market(result, stock_prices):
-    portfolio_sel = np.argwhere(result.samples[0].x).reshape(-1)
-    fig, ax = plt.subplots(figsize=(8, 6))
-    if stock_prices._data:
-        portfolio_sum = []
-        for (cnt, s) in enumerate(stocks):
-            start = stock_prices._data[cnt][0]
-            eq = stock_prices._data[cnt] / start
-            if cnt in portfolio_sel:
-                portfolio_sum.append(eq)
-                ax.plot(eq, label=f"{s} (Selected)", linestyle="--", alpha=0.5)
-            else:
-                ax.plot(eq, label=s, alpha=0.15)
-        sab = sum(portfolio_sum)
-        # This has no purpose besides shifting the color because I don't like brown
-        next(ax._get_lines.prop_cycler)
-        ax.plot(sab/budget, label="Portfolio Value")
-        ax.set_title("Portfolio Performance")
-        ax.legend()
-        plt.xticks(rotation=90)
-        plt.show()
-
-    else:
-        print('No wiki data loaded.')
 
 
 def quant(stocks, startDatetime, endDatetime, budget, risk):
@@ -55,6 +31,24 @@ def quant(stocks, startDatetime, endDatetime, budget, risk):
 
         mu = data.get_period_return_mean_vector()
         sigma = data.get_period_return_covariance_matrix()
+        def getTotalMarketData(result, stock_prices, stocks):
+            portfolio_sel = np.argwhere(result.samples[0].x).reshape(-1)
+            output = []
+            if stock_prices._data:
+                portfolio_sum = []
+                for (cnt, s) in enumerate(stocks):
+                    start = stock_prices._data[cnt][0]
+                    eq = stock_prices._data[cnt] / start
+                    if cnt in portfolio_sel:
+                        portfolio_sum.append(eq)
+                        output.append([s + "(Selected)", eq])
+                    else:
+                        output.append([s, eq])
+                sab = sum(portfolio_sum)
+                output.append(["PV", sab/budget])
+                return output
+            else:
+                return
 
         def display_values(vqe_result, stocks):
             lines = []
@@ -68,7 +62,7 @@ def quant(stocks, startDatetime, endDatetime, budget, risk):
                 lines.append(
                     (opt_str, f'{q_str} {opt_str} {round(value,4)} \t {round(probability,4)}'))
 
-            return lines[0][0]
+            return lines
             # print('\n------------------------ Top Results ------------------------')
             # print('solution \t stocks \t value \t\t probability')
             # print('--------------------------------------------------------------')
@@ -100,7 +94,10 @@ def quant(stocks, startDatetime, endDatetime, budget, risk):
         calc = MinimumEigenOptimizer(method)
         result = calc.solve(qp)
         # Display Results
-        return display_values(result, stocks)
+        return {
+            'raw': display_values(result, stocks),
+            'data': getTotalMarketData(result, data, stocks)
+        }
     except QiskitFinanceError as ex:
         return ex
 
