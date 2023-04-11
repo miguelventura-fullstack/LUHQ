@@ -109,7 +109,9 @@ def quant(stocks, startDatetime, endDatetime, budget, risk):
         # Display Results
         return {
             'raw': display_values(result, stocks),
-            'data': getTotalMarketData(result, data, stocks)
+            'data': getTotalMarketData(result, data, stocks),
+            'start': str(startDatetime),
+            'end': str(endDatetime)
         }
     except QiskitFinanceError as ex:
         return ex
@@ -122,5 +124,8 @@ class Query(BaseModel):
 
 @app.post("/")
 async def root(query: Query):
-    return quant(stocks=query.stocks, startDatetime=datetime.datetime(
-        2018, 1, 1), endDatetime=datetime.datetime(2023, 4, 7), budget=query.budget, risk=query.risk)
+    return quant(stocks=query.stocks, startDatetime=datetime.datetime(2020, 1, 1), 
+                 endDatetime=datetime.datetime(2023, 4, 7), 
+                 budget=query.budget, 
+                 risk=query.risk
+                )

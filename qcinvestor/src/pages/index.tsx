@@ -79,7 +79,7 @@ export default function Home() {
     const [budget, setBudget] = React.useState(0);
     const [tempBudget, setTemp] = React.useState(0);
     const [risk, setRisk] = React.useState(5);
-    const [userTickers, setTickers] = React.useState("AAPL, AMZN, MSFT, VOO");
+    const [userTickers, setTickers] = React.useState("AAPL, AMZN, MSFT, VOO, AMD");
     const [stockCombo, setCombo] = React.useState(3);
     const [recc, setRecc] = React.useState([" ", " ", " ", " ", " "]);
     const [dta, setDta] = React.useState([]);
@@ -99,6 +99,7 @@ export default function Home() {
         }).then((resp) => resp.json());
         setRecc(response.raw);
         setDta(response.data);
+        console.log(response)
         
     }
     function chooseDisplay() {
@@ -112,6 +113,7 @@ export default function Home() {
 
     const createGraph = async () => {
         let map: Map<string, Array<Object>> = new Map();
+
         for (let r of dta) {
             let obj = r[1];
             let tempArr: Array<Object> = [];
@@ -122,7 +124,7 @@ export default function Home() {
         }
         const strictIsoParse = d3.utcParse("%Y-%m-%dT%H:%M:%S.%LZ");
         // set the dimensions and margins of the graph
-        var margin = { top: 20, right: 20, bottom: 50, left: 70 },
+        var margin = { top: 20, right: 20, bottom: 20, left: 50 },
             width = 1700 - margin.left - margin.right,
             height =220 - margin.top - margin.bottom;
         // append the svg object to the body of the page
@@ -137,11 +139,7 @@ export default function Home() {
             .attr("transform", `translate(${margin.left},     ${margin.top})`);
 
         // Add X axis and Y axis
-        console.log(map.get("PV"))
-        console.log(d3.max(map.get("PV"), (d: any) => {
-            console.log(d.value)
-            return d.value
-        }));
+        
         let x = d3
             .scaleTime()
             .domain(d3.extent(map.get("PV"), (d: any) => d.date))
@@ -152,13 +150,17 @@ export default function Home() {
 
         let y = d3
             .scaleLinear()
-            .domain([1, d3.max(map.get("PV"), (d: any) => d.value)])
+            .domain([.5, d3.max(map.get("PV"), (d: any) => d.value)])
             .range([height, 0]);
+            
         svg.append("g").call(d3.axisLeft(y));
+        
         let line = d3.line()
             .x(function(d:any) { return x(d.date) }) 
             .y(function(d:any) { return y(d.value) }) 
-            .curve(d3.curveMonotoneX)
+            .curve(d3.curveBasis)
+
+        
         svg.append("path")
             .datum(map.get("PV"))
             .attr("fill", "none")
@@ -166,6 +168,7 @@ export default function Home() {
             .attr("stroke", "steelblue")
             .attr("stroke-width", 1.5)
             .attr("d", line)
+            
     };
 
     function landingPage() {
@@ -238,7 +241,7 @@ export default function Home() {
 
     function dashboardPage() {
         return (
-            <div className="flex w-screen h-screen bg-white relative border-purplish">
+            <div className="flex w-screen h-screen overflow-hidden bg-white relative border-purplish">
                 <Image
                     src={explore}
                     alt=""
@@ -385,10 +388,9 @@ export default function Home() {
                         </div>
                     </div>
                     <div className="absolute flex flex-col h-[30%] w-[95.58%] m-10 bottom-4">
-                        <div className="border-purplish bg-bluish border-2 w-64 h-10 ">
+                        <div className="border-purplish bg-bluish border-2 w-64 h-10 "> {/* Heading for Bottom Panel*/}
                             {" "}
-                            {/*Heading for Bottom Panel*/}
-                        </div>
+                                </div> 
                         <div
                             className="border-purplish bg-bluish border-2 w-full h-min flex-grow"
                             id="graph"
